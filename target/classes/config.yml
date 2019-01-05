@@ -1,0 +1,6 @@
+worlds: ["Moon", "AnotherSillyMoonWorldName"]
+useGravity: true
+useEffects: true
+useParticles: true
+useGlassHelmets: true
+useCustomBlockDrops: true
