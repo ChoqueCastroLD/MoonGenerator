@@ -53,7 +53,7 @@ public class OreVeinPopulator extends BlockPopulator {
             } else if (orePicker > 35) {
                 ore = Material.IRON_ORE;
                 propagation = randomIntBetween(5,10);
-                Y = randomIntBetween(3, (int) (maxVeinY * 0.8));
+                Y = randomIntBetween(3, (int) (maxVeinY * 0.9));
             } else if (orePicker > 35) {
                 ore = Material.LAPIS_ORE;
                 propagation = randomIntBetween(5,10);
@@ -73,12 +73,13 @@ public class OreVeinPopulator extends BlockPopulator {
             int offsetX = chunk.getX() << 4;
             int offsetZ = chunk.getZ() << 4;
 
-            if(world.getBlockAt(offsetX + X, Y, offsetZ + Z).getType().compareTo(Material.BEDROCK)!=0)
+            if(world.getBlockAt(offsetX + X, Y, offsetZ + Z).getType().compareTo(Material.BEDROCK)!=0&&world.getBlockAt(offsetX + X, Y, offsetZ + Z).getType().compareTo(Material.AIR)!=0&&world.getBlockAt(offsetX + X, Y+1, offsetZ + Z).getType().compareTo(Material.AIR)!=0)
             world.getBlockAt(offsetX + X, Y, offsetZ + Z).setType(ore, false);
 
             for(int prop = 0; prop < propagation; prop++){
-                if(world.getBlockAt(offsetX + X, Y, offsetZ + Z).getType().compareTo(Material.BEDROCK)!=0)
+                if(world.getBlockAt(offsetX + X, Y, offsetZ + Z).getType().compareTo(Material.BEDROCK)!=0&&world.getBlockAt(offsetX + X, Y, offsetZ + Z).getType().compareTo(Material.AIR)!=0&&world.getBlockAt(offsetX + X, Y+1, offsetZ + Z).getType().compareTo(Material.AIR)!=0)
                 world.getBlockAt(offsetX + X, Y, offsetZ + Z).setType(ore, false);
+
                 orePicker = random.nextInt(2);
                 if(orePicker == 0) {
                     X = randomIntBetween(X - 1, X + 1);

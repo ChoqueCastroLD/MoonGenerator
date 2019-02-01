@@ -1,32 +1,47 @@
 package me.shoko.moongenerator;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ChunkMoonGenerator extends ChunkGenerator {
 
+    JavaPlugin plugin = this.plugin;
+
     int currentHeight = 60;
+
+    public float lerp(float min, float max, float norm){
+        float res = (max - min) * norm + min;
+        return res;
+    }
 
     @Override
     public ChunkData generateChunkData(World world, Random random, int chunkX, int chunkZ, BiomeGrid biome) {
         ChunkGenerator.ChunkData chunk = createChunkData(world);
 
-        SimplexOctaveGenerator terrainGen = new SimplexOctaveGenerator(new Random(world.getSeed()), 8);
+        SimplexOctaveGenerator terrainGen = new SimplexOctaveGenerator(new Random(world.getSeed()), 2);
 
-        // generator.setScale(0.005D);
         terrainGen.setScale(0.0056D);
 
         for (int X = 0; X < 16; X++) {
             for (int Z = 0; Z < 16; Z++) {
 
-                currentHeight = (int) ((terrainGen.noise(chunkX * 16 + X, chunkZ * 16 + Z, 0.5D, 0.5D, true) + 1) * 15D + 50D);
+                float terrainNoise = (float) (terrainGen.noise(chunkX * 16 + X, chunkZ * 16 + Z, 0.05D, 0.8D, true));
+
+                currentHeight = (int) ( lerp(0f, 1f, terrainNoise) * 15D + 60D);
+
+                if(currentHeight > 200) currentHeight = 200;
+                if(currentHeight < 16) currentHeight = 16;
+
 
                 chunk.setBlock(X, currentHeight, Z, Material.DEAD_BRAIN_CORAL_BLOCK);
                 if (random.nextInt(100) < 90) {
@@ -55,9 +70,9 @@ public class ChunkMoonGenerator extends ChunkGenerator {
                     }
 
                 }
-
                 chunk.setBlock(X, 0, Z, Material.BEDROCK);
 
+                biome.setBiome(X, Z, Biome.DESERT);
             }
         }
         return chunk;
@@ -65,7 +80,7 @@ public class ChunkMoonGenerator extends ChunkGenerator {
 
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
-        return Arrays.asList( new FloraPopulator(), new OreVeinPopulator(), new CraterPopulator() );
+        return Arrays.asList(new CraterPopulator(), new OreVeinPopulator(), new FloraPopulator());
     }
 
 }
