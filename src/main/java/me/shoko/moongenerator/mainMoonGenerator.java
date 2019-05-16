@@ -383,6 +383,27 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
                 }
             }, 0L, 30L);
         }
+
+
+        // test
+
+        if(getServer().getWorld(moonWorldName) == null) {
+
+            System.out.println("Generating Moon World named: "+moonWorldName);
+
+            WorldCreator wc = new WorldCreator(moonWorldName);
+
+            //wc.generator("MoonGenerator");
+
+            getServer().createWorld(wc);
+
+            System.out.println("Moon world generated! name: "+ moonWorldName);
+
+        } else {
+            System.out.println("Moon world found, using Moon world named: "+ moonWorldName);
+        }
+
+        // /test
     }
 
     @Override

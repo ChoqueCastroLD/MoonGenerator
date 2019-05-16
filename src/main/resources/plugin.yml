@@ -5,4 +5,4 @@ api-version: 1.13
 authors: [Shoko]
 description: The best moon generator plugin for mc 1.13.2
 website: https://www.spigotmc.org/members/shoko.633572/
-load: startup
+load: POSTWORLD
