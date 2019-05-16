@@ -5,6 +5,8 @@ import com.destroystokyo.paper.ParticleBuilder;
 import com.destroystokyo.paper.Title;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -34,6 +36,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static org.bukkit.Bukkit.getServer;
 
 
 public final class mainMoonGenerator extends JavaPlugin implements Listener {
@@ -267,7 +271,24 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+
+
+        // ----------------------
+
+        System.out.println("Trying to load Moon World");
+
+        if( getServer().getWorld("moon") != null ){
+            System.out.println("Moon world found!");
+        } else {
+            System.out.println("Moon world NOT found!");
+            System.out.println("Please generate it using /moon");
+        }
+
+        // ----------------------
+
         System.out.println("Enabling Shoko's Moon Generator");
+
+        this.getCommand("moon").setExecutor(new generateMoon());
 
         saveDefaultConfig();
 
@@ -385,25 +406,6 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
         }
 
 
-        // test
-
-        if(getServer().getWorld(moonWorldName) == null) {
-
-            System.out.println("Generating Moon World named: "+moonWorldName);
-
-            WorldCreator wc = new WorldCreator(moonWorldName);
-
-            wc.generator("MoonGenerator");
-
-            getServer().createWorld(wc);
-
-            System.out.println("Moon world generated! name: "+ moonWorldName);
-
-        } else {
-            System.out.println("Moon world found, using Moon world named: "+ moonWorldName);
-        }
-
-        // /test
     }
 
     @Override
@@ -414,6 +416,7 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         System.out.println("Stopping Shoko's Moon Generator");
-        System.out.println("Good bye! Take care, love you <3 -Shoko");
+        System.out.println("Good bye! love you <3 -Shoko");
     }
+
 }
