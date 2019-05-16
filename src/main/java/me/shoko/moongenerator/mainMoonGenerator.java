@@ -273,8 +273,8 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
 
         FileConfiguration config = plugin.getConfig();
 
-        moonWorldName =  config.getString("moonWorldName");
-        earthWorldName = config.getString("earthWorldName");
+        moonWorldName =  config.getString("moonWorldName").toLowerCase();
+        earthWorldName = config.getString("earthWorldName").toLowerCase();
 
         toTheMoon =  config.getString("toTheMoon");
         toTheEarth =  config.getString("toTheEarth");
@@ -393,7 +393,7 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
 
             WorldCreator wc = new WorldCreator(moonWorldName);
 
-            //wc.generator("MoonGenerator");
+            wc.generator("MoonGenerator");
 
             getServer().createWorld(wc);
 
