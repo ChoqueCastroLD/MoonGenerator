@@ -1,13 +1,11 @@
 package me.shoko.moongenerator;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
@@ -15,7 +13,7 @@ import java.util.*;
 
 public class ChunkMoonGenerator extends ChunkGenerator {
 
-    JavaPlugin plugin = this.plugin;
+    JavaPlugin plugin;
 
     public float lerp(float min, float max, float norm){
         return (max - min) * norm + min;
@@ -57,7 +55,7 @@ public class ChunkMoonGenerator extends ChunkGenerator {
                     } else if (i > currentHeight * 0.6) {
                         chunk.setBlock(X, i, Z, Material.DEAD_TUBE_CORAL_BLOCK);
                     } else if (i > currentHeight * 0.4) {
-                        chunk.setBlock(X, i, Z, Material.ANDESITE);
+                        chunk.setBlock(X, i, Z, Material.COBBLESTONE);
                     } else if (i > currentHeight * 0.1) {
                         chunk.setBlock(X, i, Z, Material.PACKED_ICE);
                     } else {
@@ -82,12 +80,11 @@ public class ChunkMoonGenerator extends ChunkGenerator {
         return true;
     }
 
-
+/*
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
         return Arrays.asList(new CraterPopulator(), new OreVeinPopulator(), new FloraPopulator());
     }
-
-
+*/
 
 }

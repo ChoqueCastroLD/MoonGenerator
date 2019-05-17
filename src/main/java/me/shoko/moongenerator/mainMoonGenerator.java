@@ -1,12 +1,8 @@
 package me.shoko.moongenerator;
 
 
-import com.destroystokyo.paper.ParticleBuilder;
-import com.destroystokyo.paper.Title;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -14,14 +10,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -32,13 +24,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import javax.swing.text.html.parser.Entity;
-import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import static org.bukkit.Bukkit.getServer;
 
 
 public final class mainMoonGenerator extends JavaPlugin implements Listener {
@@ -194,7 +181,7 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
                                     cancel();
                                 } else {
                                     if (player.getVehicle().equals(rocket)) {
-                                        if (player.getLocation().getY() >= 100) {
+                                        if (player.getLocation().getY() >= 150) {
                                             if (config.getString("moonWorldName").compareToIgnoreCase(player.getWorld().getName()) != 0) {
                                                 player.sendActionBar(ChatColor.GREEN + config.getString("toTheMoon"));
                                                 int x = (int) player.getLocation().getX();
@@ -297,8 +284,20 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
                     wc.generator(new ChunkMoonGenerator());
                     World w = wc.createWorld();
                     log("Moon world named '"+config.getString("moonWorldName")+"' Generated!");
+
+
+                    // w.getPopulators().add(new CraterPopulator());
+                    w.getPopulators().add(new OreVeinPopulator());
+                    w.getPopulators().add(new FloraPopulator());
+
+
+                    Chunk[] cs = w.getLoadedChunks();
+                    for (Chunk chunk : cs) {
+                        chunk.load(true);
+                    }
                 }
-            }.runTaskLater(this,1);
+            }.runTaskLater(plugin,1);
+
         }
 
         // ----------------------

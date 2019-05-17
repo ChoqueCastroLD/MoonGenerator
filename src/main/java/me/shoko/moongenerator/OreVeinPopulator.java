@@ -20,6 +20,7 @@ public class OreVeinPopulator extends BlockPopulator {
         }
     }
 
+    @Override
     public void populate(World world, Random random, Chunk chunk) {
         int amount = randomIntBetween(25, 60);
         for (int i = 1; i < amount; i++) {
@@ -62,7 +63,7 @@ public class OreVeinPopulator extends BlockPopulator {
 
             if(orePicker == 6) {
                 ore = Material.EMERALD_ORE;
-                propagation = 0;
+                propagation = 1;
                 Y = randomIntBetween(1, (int) (maxVeinY * 0.2));
             }
 
@@ -72,7 +73,9 @@ public class OreVeinPopulator extends BlockPopulator {
             if(b.getType().equals(Material.BEDROCK)&& !b.getType().equals(Material.AIR))
                 b.setType(ore, false);
 
-            for(int prop = 0; prop < propagation; prop++){
+            for(int prop = 0; prop < propagation+1; prop++){
+                b = world.getBlockAt((chunk.getX() << 4) + X, Y, (chunk.getZ() << 4) + Z);
+
                 if(!b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.AIR))
                     b.setType(ore, false);
 
