@@ -3,8 +3,6 @@ package me.shoko.moongenerator;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
@@ -12,14 +10,15 @@ import org.bukkit.util.Vector;
 import java.util.Random;
 
 public class CraterPopulator extends BlockPopulator {
-    private static final int CRATER_CHANCE = 1; // Out of 100
-    private static final int MIN_CRATER_SIZE = 3;
-    private static final int SMALL_CRATER_SIZE = 10;
-    private static final int BIG_CRATER_SIZE = 24;
-    private static final int BIG_CRATER_CHANCE = 3; // Out of 100
 
 
     public void populate(World world, Random random, Chunk source) {
+        int CRATER_CHANCE = 1; // Out of 100
+        int MIN_CRATER_SIZE = 3;
+        int SMALL_CRATER_SIZE = 10;
+        int BIG_CRATER_SIZE = 24;
+        int BIG_CRATER_CHANCE = 3; // Out of 100
+        
         if (random.nextInt(100) <= CRATER_CHANCE) {
             int centerX = (source.getX() << 4) + random.nextInt(16);
             int centerZ = (source.getZ() << 4) + random.nextInt(16);
@@ -62,11 +61,9 @@ public class CraterPopulator extends BlockPopulator {
                             int yy = world.getBlockAt(position.toLocation(world)).getY();
                             int zz = world.getBlockAt(position.toLocation(world)).getZ();
                             if(y < radius/2 && !world.getBlockAt((int) position.toLocation(world).getX(), (int) position.toLocation(world).getY() - 1, (int) position.toLocation(world).getZ()).getType().equals(Material.AIR) && !world.getBlockAt((int) position.toLocation(world).getX(), (int) position.toLocation(world).getY() - 1, (int) position.toLocation(world).getZ()).getType().equals(powder) && !world.getBlockAt((int) position.toLocation(world).getX(), (int) position.toLocation(world).getY() - 1, (int) position.toLocation(world).getZ()).getType().equals(Material.AIR)
-                                    && !world.getBlockAt((int) position.toLocation(world).getX(), (int) position.toLocation(world).getY() - 1, (int) position.toLocation(world).getZ()).getType().equals(null)
                                     && !world.getBlockAt((int) position.toLocation(world).getX(), (int) position.toLocation(world).getY() - 1, (int) position.toLocation(world).getZ()).getType().equals(Material.BEDROCK))
                                 world.getBlockAt(xx,yy-1,zz).setType(powder, false);
                             if(!world.getBlockAt((int) position.toLocation(world).getX(), (int) position.toLocation(world).getY() - 2, (int) position.toLocation(world).getZ()).getType().equals(Material.AIR) && !world.getBlockAt((int) position.toLocation(world).getX(), (int) position.toLocation(world).getY() - 2, (int) position.toLocation(world).getZ()).getType().equals(powder) && !world.getBlockAt((int) position.toLocation(world).getX(), (int) position.toLocation(world).getY() - 2, (int) position.toLocation(world).getZ()).getType().equals(Material.AIR)
-                                    && !world.getBlockAt((int) position.toLocation(world).getX(), (int) position.toLocation(world).getY() - 2, (int) position.toLocation(world).getZ()).getType().equals(null)
                                     && !world.getBlockAt((int) position.toLocation(world).getX(), (int) position.toLocation(world).getY() - 2, (int) position.toLocation(world).getZ()).getType().equals(Material.BEDROCK))
                                 world.getBlockAt(xx,yy-2,zz).setType(powder, false);
 

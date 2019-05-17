@@ -46,22 +46,19 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
     // Global variables and stuff
     JavaPlugin plugin = this;
     List<String> configLore;
-    boolean useGravity, useSkullHelmets, useParticles, useGlassHelmets, useCustomBlockDrops, useEffects, useRockets, useCustomMobs,useSpecialMobs, useOxygenSafeZone;
-    String moonWorldName, evolvedMoonCreeperName, missionFailed, toTheMoon, toTheEarth, earthWorldName, MoonRockName, SoftMoonRockName, MoonCobblestoneName,
-    LostAstronautName,MoonPhantomName,LostMoonExplorerName,FailedExperimentalHorseName,
-    MoonMobSufixName,MoonMobPrefixName;
+    FileConfiguration config;
 
     // Change the block drops in the specified worlds
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void BlockBreakEvent(BlockBreakEvent event){
-        if(useCustomBlockDrops) {
-            if (moonWorldName.compareToIgnoreCase(event.getBlock().getWorld().getName()) == 0) {
+        if(config.getBoolean("useCustomBlockDrops")) {
+            if (config.getString("moonWorldName").compareToIgnoreCase(event.getBlock().getWorld().getName()) == 0) {
                 if (event.getBlock().getType().equals(Material.DEAD_BRAIN_CORAL_BLOCK)) {
                     event.setCancelled(true);
 
                     ItemStack drop = new ItemStack(Material.DEAD_BRAIN_CORAL_BLOCK);
                     ItemMeta meta = drop.getItemMeta();
-                    meta.setDisplayName(ChatColor.RESET+MoonRockName);
+                    meta.setDisplayName(ChatColor.RESET+config.getString("MoonRockName"));
                     drop.setItemMeta(meta);
 
                     event.getBlock().setType(Material.AIR);
@@ -72,7 +69,7 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
 
                     ItemStack drop = new ItemStack(Material.DEAD_BUBBLE_CORAL_BLOCK);
                     ItemMeta meta = drop.getItemMeta();
-                    meta.setDisplayName(ChatColor.RESET+SoftMoonRockName);
+                    meta.setDisplayName(ChatColor.RESET+config.getString("SoftMoonRockName"));
                     meta.setLore(configLore);
                     drop.setItemMeta(meta);
 
@@ -84,7 +81,7 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
 
                     ItemStack drop = new ItemStack(Material.DEAD_HORN_CORAL_BLOCK);
                     ItemMeta meta = drop.getItemMeta();
-                    meta.setDisplayName(ChatColor.RESET+MoonCobblestoneName);
+                    meta.setDisplayName(ChatColor.RESET+config.getString("MoonCobblestoneName"));
                     drop.setItemMeta(meta);
 
                     event.getBlock().setType(Material.AIR);
@@ -97,7 +94,7 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
     // Custom mob spawn logic
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onMobSpawn(CreatureSpawnEvent event){
-        if (moonWorldName.compareToIgnoreCase(event.getEntity().getWorld().getName()) == 0 && useCustomMobs) {
+        if (config.getString("moonWorldName").compareToIgnoreCase(event.getEntity().getWorld().getName()) == 0 && config.getBoolean("useCustomMobs")) {
             LivingEntity mob = event.getEntity();
             PotionEffect efecto1 = new PotionEffect(PotionEffectType.SLOW_FALLING, Integer.MAX_VALUE, 3);
             PotionEffect efecto2 = new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 3);
@@ -107,7 +104,7 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
 
             mob.getEquipment().setHelmet(new ItemStack(Material.GLASS));
 
-            mob.setCustomName(ChatColor.AQUA+MoonMobSufixName+mob.getType().toString()+MoonMobPrefixName);
+            mob.setCustomName(ChatColor.AQUA+config.getString("MoonMobSufixName")+mob.getType().toString()+config.getString("MoonMobPrefixName"));
 
             if(mob.getType().equals(EntityType.SLIME)
                     || mob.getType().equals(EntityType.SPIDER)
@@ -125,10 +122,10 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
                 if(new Random().nextInt(100)<10) {
                     event.setCancelled(true);
                     org.bukkit.entity.Entity mober = event.getEntity().getWorld().spawnEntity(event.getLocation(), EntityType.SKELETON_HORSE);
-                    mober.setCustomName(ChatColor.AQUA + FailedExperimentalHorseName);
+                    mober.setCustomName(ChatColor.AQUA + config.getString("FailedExperimentalHorseName"));
                     org.bukkit.entity.Entity newmob = mober.getWorld().spawnEntity(mober.getLocation(), EntityType.STRAY);
                     newmob.setSilent(true);
-                    newmob.setCustomName(ChatColor.AQUA + LostMoonExplorerName);
+                    newmob.setCustomName(ChatColor.AQUA + config.getString("LostMoonExplorerName"));
                     mober.addPassenger(newmob);
                 }
             }
@@ -137,25 +134,25 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
                 if(new Random().nextBoolean()) {
                     if (new Random().nextBoolean()) {
                         org.bukkit.entity.Entity mober = event.getEntity().getWorld().spawnEntity(event.getLocation(), EntityType.ZOMBIE_VILLAGER);
-                        mober.setCustomName(ChatColor.AQUA + LostAstronautName);
+                        mober.setCustomName(ChatColor.AQUA + config.getString("LostAstronautName"));
                     } else {
                         org.bukkit.entity.Entity mober = event.getEntity().getWorld().spawnEntity(event.getLocation(), EntityType.DROWNED);
-                        mober.setCustomName(ChatColor.AQUA + LostAstronautName);
+                        mober.setCustomName(ChatColor.AQUA + config.getString("LostAstronautName"));
                     }
                 }
             }
             if(mob.getType().equals(EntityType.CREEPER)){
                 if(new Random().nextBoolean()) {
-                    if (new Random().nextInt(10) > 8 && useSpecialMobs) {
-                        mob.setCustomName(ChatColor.GREEN + "" + ChatColor.BOLD + evolvedMoonCreeperName);
+                    if (new Random().nextInt(10) > 8 && config.getBoolean("useSpecialMobs")) {
+                        mob.setCustomName(ChatColor.GREEN + "" + ChatColor.BOLD + config.getString("evolvedMoonCreeperName"));
                         mob.setCustomNameVisible(true);
                         org.bukkit.entity.Entity newmob = mob.getWorld().spawnEntity(mob.getLocation(), EntityType.PHANTOM);
                         newmob.setSilent(true);
-                        newmob.setCustomName(ChatColor.AQUA + MoonPhantomName);
+                        newmob.setCustomName(ChatColor.AQUA + config.getString("MoonPhantomName"));
                         newmob.addPassenger(mob);
                     } else {
                         org.bukkit.entity.Entity mober = event.getEntity().getWorld().spawnEntity(event.getLocation(), EntityType.STRAY);
-                        mober.setCustomName(ChatColor.AQUA + LostAstronautName);
+                        mober.setCustomName(ChatColor.AQUA + config.getString("LostAstronautName"));
                         event.setCancelled(true);
                     }
                 }
@@ -168,7 +165,7 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            if(useRockets) {
+            if(config.getBoolean("useRockets")) {
                 Player player = event.getPlayer();
                 PlayerInventory playerInv = player.getInventory();
                 if(playerInv.getItemInMainHand().equals(new ItemStack(Material.FIREWORK_ROCKET)) || playerInv.getItemInOffHand().equals(new ItemStack(Material.FIREWORK_ROCKET))){
@@ -193,29 +190,29 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
                             @Override
                             public void run() {
                                 if (player.getVehicle() == null) {
-                                    player.sendActionBar(ChatColor.RED + missionFailed);
+                                    player.sendActionBar(ChatColor.RED + config.getString("missionFailed"));
                                     cancel();
                                 } else {
                                     if (player.getVehicle().equals(rocket)) {
-                                        if (player.getLocation().getY() >= 250) {
-                                            if (moonWorldName.compareToIgnoreCase(player.getWorld().getName()) != 0) {
-                                                player.sendActionBar(ChatColor.GREEN + toTheMoon);
+                                        if (player.getLocation().getY() >= 100) {
+                                            if (config.getString("moonWorldName").compareToIgnoreCase(player.getWorld().getName()) != 0) {
+                                                player.sendActionBar(ChatColor.GREEN + config.getString("toTheMoon"));
                                                 int x = (int) player.getLocation().getX();
                                                 int z = (int) player.getLocation().getZ();
                                                 try {
-                                                    player.teleport(new Location(Bukkit.getWorld(moonWorldName), x, 255, z));
+                                                    player.teleport(new Location(Bukkit.getWorld(config.getString("moonWorldName")), x, 255, z));
                                                 } catch (Exception e) {
-                                                    player.sendActionBar(ChatColor.RED + "Moon World " + moonWorldName + " not found.");
+                                                    player.sendActionBar(ChatColor.RED + "Moon World " + config.getString("moonWorldName") + " not found.");
                                                 }
                                                 cancel();
                                             } else {
-                                                player.sendActionBar(ChatColor.GREEN + toTheEarth);
+                                                player.sendActionBar(ChatColor.GREEN + config.getString("toTheEarth"));
                                                 int x = (int) player.getLocation().getX();
                                                 int z = (int) player.getLocation().getZ();
                                                 try {
-                                                    player.teleport(new Location(Bukkit.getWorld(earthWorldName), x, 255, z));
+                                                    player.teleport(new Location(Bukkit.getWorld(config.getString("earthWorldName")), x, 255, z));
                                                 } catch (Exception e) {
-                                                    player.sendActionBar(ChatColor.RED + "Earth World " + earthWorldName + " not found.");
+                                                    player.sendActionBar(ChatColor.RED + "Earth World " + config.getString("earthWorldName") + " not found.");
                                                 }
                                                 cancel();
                                             }
@@ -223,7 +220,7 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
                                             player.sendActionBar(ChatColor.DARK_GREEN + "Y: " + (int) player.getLocation().getY());
                                         }
                                     } else {
-                                        player.sendActionBar(ChatColor.RED + missionFailed);
+                                        player.sendActionBar(ChatColor.RED + config.getString("missionFailed"));
                                         cancel();
                                     }
                                 }
@@ -239,7 +236,7 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
     // Allow players to use Glass as Helmets
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void InventoryClickEvent​(InventoryClickEvent event){
-        if(useGlassHelmets) {
+        if(config.getBoolean("useGlassHelmets")) {
             if (event.getRawSlot() == 5 && event.getSlotType().equals(InventoryType.SlotType.ARMOR)) {
                 ItemStack preHelmet = event.getCurrentItem();
                 ItemStack newHelmet = event.getCursor();
@@ -270,98 +267,55 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
         }
     }
 
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onWorldInit(WorldInitEvent event)
-    {
-       /* System.out.println("Decargando chunks en moon");
-        World world = event.getWorld();
-        if (world.getName().equals("moon")){
-            world.setKeepSpawnInMemory(false);
-            world.getForceLoadedChunks().forEach((Chunk c) -> {
-                c.unload(false);
-            });
-            for (Chunk c : world.getLoadedChunks()) {
-                c.unload(false);
-            }
-        }*/
-
+    public void log(String msg){
+        Bukkit.getLogger().info(msg);
     }
 
     @Override
     public void onEnable() {
-
-
-        // ----------------------
-
-        System.out.println("Trying to load Moon World");
-
-        if( getServer().getWorld("moon") != null ){
-            System.out.println("Moon world found!");
-        } else {
-            System.out.println("Moon world NOT found!");
-            System.out.println("Please generate it using /moon");
-        }
-
-        // ----------------------
-
-        System.out.println("Enabling Shoko's Moon Generator");
-
-        this.getCommand("moon").setExecutor(new generateMoon());
+        log("Enabling Shoko's Moon Generator");
 
         saveDefaultConfig();
 
-        FileConfiguration config = plugin.getConfig();
+        config = plugin.getConfig();
 
-        moonWorldName =  config.getString("moonWorldName").toLowerCase();
-        earthWorldName = config.getString("earthWorldName").toLowerCase();
+        // ----------------------
 
-        toTheMoon =  config.getString("toTheMoon");
-        toTheEarth =  config.getString("toTheEarth");
+        // generates or load moon world
 
-        missionFailed =  config.getString("missionFailed");
+        log("Trying to load Moon World");
 
-        useSkullHelmets = config.getBoolean("useSkullHelmets");
+        if( getServer().getWorld(config.getString("moonWorldName")) != null ){
+            log("Moon world named '"+config.getString("moonWorldName")+"' found!");
+        } else {
+            log("Moon world named '"+config.getString("moonWorldName")+"' NOT found!");
+            log("Generating...");
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    WorldCreator wc = new WorldCreator(config.getString("moonWorldName"));
+                    wc.generator(new ChunkMoonGenerator());
+                    World w = wc.createWorld();
+                    log("Moon world named '"+config.getString("moonWorldName")+"' Generated!");
+                }
+            }.runTaskLater(this,1);
+        }
 
-        useGravity = config.getBoolean("useGravity");
-        useEffects = config.getBoolean("useEffects");
-        useParticles = config.getBoolean("useParticles");
-        useGlassHelmets = config.getBoolean("useGlassHelmets");
-        useCustomBlockDrops = config.getBoolean("useCustomBlockDrops");
-        useRockets = config.getBoolean("useRockets");
-
-        useCustomMobs = config.getBoolean("useCustomMobs");
-        useSpecialMobs = config.getBoolean("useSpecialMobs");
-
-        useOxygenSafeZone = config.getBoolean("useOxygenSafeZone");
-
-        configLore = config.getStringList("CustomBlockLore");
-        MoonRockName = config.getString("MoonRockName");
-        SoftMoonRockName = config.getString("SoftMoonRockName");
-        MoonCobblestoneName = config.getString("MoonCobblestoneName");
-
-        LostAstronautName = config.getString("LostAstronautName");
-        MoonPhantomName = config.getString("MoonPhantomName");
-        LostMoonExplorerName = config.getString("LostMoonExplorerName");
-        FailedExperimentalHorseName = config.getString("FailedExperimentalHorseName");
-        evolvedMoonCreeperName = config.getString("evolvedMoonCreeperName");
-
-        MoonMobSufixName = config.getString("MoonMobSufixName");
-        MoonMobPrefixName = config.getString("MoonMobPrefixName");
+        // ----------------------
 
         Bukkit.getPluginManager().registerEvents(this, this);
 
         BukkitScheduler scheduler = getServer().getScheduler();
 
         // Apply effects to players in the worlds marked as Moons
-        if(useEffects) {
+        if(config.getBoolean("useEffects")) {
             scheduler.scheduleSyncRepeatingTask(this, () -> {
                 for (World world : Bukkit.getServer().getWorlds()) {
-                    if (moonWorldName.compareToIgnoreCase(world.getName()) == 0) {
+                    if (config.getString("moonWorldName").compareToIgnoreCase(world.getName()) == 0) {
                         for (Player p : world.getPlayers()) {
                             if (!p.getGameMode().equals(GameMode.CREATIVE) && !p.getGameMode().equals(GameMode.SPECTATOR)) {
                                 boolean isNearOxygen = false;
-                                if(useOxygenSafeZone) {
+                                if(config.getBoolean("useOxygenSafeZone")) {
                                     int radius = 10;
                                     Block middle = p.getLocation().getBlock();
                                     for (int x = radius; x >= -radius; x--) {
@@ -407,13 +361,13 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
                                             // nothing to do here
                                         } else {
                                             p.addPotionEffect(efecto3, true);
-                                            if (useParticles)
+                                            if (config.getBoolean("useParticles"))
                                                 p.spawnParticle(Particle.DAMAGE_INDICATOR, p.getLocation().getX(), p.getLocation().getY() + 1, p.getLocation().getZ(), 15);
                                             p.playSound(p.getLocation(), Sound.ENTITY_DROWNED_DEATH, 1f, 1f);
                                         }
                                     } else {
                                         p.addPotionEffect(efecto3, true);
-                                        if (useParticles)
+                                        if (config.getBoolean("useParticles"))
                                             p.spawnParticle(Particle.DAMAGE_INDICATOR, p.getLocation().getX(), p.getLocation().getY() + 1, p.getLocation().getZ(), 10);
                                     }
                                 }
@@ -434,8 +388,8 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        System.out.println("Stopping Shoko's Moon Generator");
-        System.out.println("Good bye! love you <3 -Shoko");
+        log("Stopping Shoko's Moon Generator");
+        log("Good bye! love you <3 -Shoko");
     }
 
 }

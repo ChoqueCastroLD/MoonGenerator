@@ -1,7 +1,5 @@
 package me.shoko.moongenerator;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.generator.BlockPopulator;
@@ -9,8 +7,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
 
 public class OreVeinPopulator extends BlockPopulator {
 
@@ -54,7 +50,7 @@ public class OreVeinPopulator extends BlockPopulator {
                 ore = Material.IRON_ORE;
                 propagation = randomIntBetween(5,10);
                 Y = randomIntBetween(3, (int) (maxVeinY * 0.9));
-            } else if (orePicker > 35) {
+            } else if (orePicker > 25) {
                 ore = Material.LAPIS_ORE;
                 propagation = randomIntBetween(5,10);
                 Y = randomIntBetween(3, (int) (maxVeinY * 0.5));
@@ -70,15 +66,15 @@ public class OreVeinPopulator extends BlockPopulator {
                 Y = randomIntBetween(1, (int) (maxVeinY * 0.2));
             }
 
-            int offsetX = chunk.getX() << 4;
-            int offsetZ = chunk.getZ() << 4;
-
-            if(world.getBlockAt(offsetX + X, Y, offsetZ + Z).getType().compareTo(Material.BEDROCK)!=0&&world.getBlockAt(offsetX + X, Y, offsetZ + Z).getType().compareTo(Material.AIR)!=0&&world.getBlockAt(offsetX + X, Y+1, offsetZ + Z).getType().compareTo(Material.AIR)!=0)
-            world.getBlockAt(offsetX + X, Y, offsetZ + Z).setType(ore, false);
+            
+            Block b = world.getBlockAt((chunk.getX() << 4) + X, Y, (chunk.getZ() << 4) + Z);
+            
+            if(b.getType().equals(Material.BEDROCK)&& !b.getType().equals(Material.AIR))
+                b.setType(ore, false);
 
             for(int prop = 0; prop < propagation; prop++){
-                if(world.getBlockAt(offsetX + X, Y, offsetZ + Z).getType().compareTo(Material.BEDROCK)!=0&&world.getBlockAt(offsetX + X, Y, offsetZ + Z).getType().compareTo(Material.AIR)!=0&&world.getBlockAt(offsetX + X, Y+1, offsetZ + Z).getType().compareTo(Material.AIR)!=0)
-                world.getBlockAt(offsetX + X, Y, offsetZ + Z).setType(ore, false);
+                if(!b.getType().equals(Material.BEDROCK) && !b.getType().equals(Material.AIR))
+                    b.setType(ore, false);
 
                 orePicker = random.nextInt(2);
                 if(orePicker == 0) {

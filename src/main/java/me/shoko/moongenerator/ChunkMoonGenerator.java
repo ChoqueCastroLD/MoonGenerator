@@ -17,15 +17,14 @@ public class ChunkMoonGenerator extends ChunkGenerator {
 
     JavaPlugin plugin = this.plugin;
 
-    int currentHeight = 60;
-
     public float lerp(float min, float max, float norm){
-        float res = (max - min) * norm + min;
-        return res;
+        return (max - min) * norm + min;
     }
 
     @Override
     public ChunkData generateChunkData(World world, Random random, int chunkX, int chunkZ, BiomeGrid biome) {
+        int currentHeight;
+
         ChunkGenerator.ChunkData chunk = createChunkData(world);
 
         SimplexOctaveGenerator terrainGen = new SimplexOctaveGenerator(new Random(world.getSeed()), 2);
@@ -77,12 +76,18 @@ public class ChunkMoonGenerator extends ChunkGenerator {
         }
         return chunk;
     }
-/*
+
+    @Override
+    public boolean isParallelCapable(){
+        return true;
+    }
+
+
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
         return Arrays.asList(new CraterPopulator(), new OreVeinPopulator(), new FloraPopulator());
     }
-*/
+
 
 
 }
