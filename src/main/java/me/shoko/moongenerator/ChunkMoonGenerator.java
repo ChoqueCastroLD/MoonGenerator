@@ -77,10 +77,12 @@ public class ChunkMoonGenerator extends ChunkGenerator {
         }
         return chunk;
     }
-
+/*
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
         return Arrays.asList(new CraterPopulator(), new OreVeinPopulator(), new FloraPopulator());
     }
+*/
+
 
 }

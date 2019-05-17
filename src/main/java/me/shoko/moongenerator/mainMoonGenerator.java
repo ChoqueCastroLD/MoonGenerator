@@ -19,6 +19,7 @@ import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -267,6 +268,24 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
                 }
             }
         }
+    }
+
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onWorldInit(WorldInitEvent event)
+    {
+       /* System.out.println("Decargando chunks en moon");
+        World world = event.getWorld();
+        if (world.getName().equals("moon")){
+            world.setKeepSpawnInMemory(false);
+            world.getForceLoadedChunks().forEach((Chunk c) -> {
+                c.unload(false);
+            });
+            for (Chunk c : world.getLoadedChunks()) {
+                c.unload(false);
+            }
+        }*/
+
     }
 
     @Override
