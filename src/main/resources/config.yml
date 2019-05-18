@@ -4,7 +4,7 @@ earthWorldName: "world"
 toTheMoon: "Mission Accomplished...! Traveling to the Moon"
 toTheEarth: "Mission Accomplished...! Traveling back to Earth"
 
-missionFailed: "Mission Failed...! You didn't get to Y 250"
+missionFailed: "Mission Failed...! You didn't get to Y 120"
 
 useGravity: true
 useEffects: true

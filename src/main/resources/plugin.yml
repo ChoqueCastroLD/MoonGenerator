@@ -1,7 +1,7 @@
 name: MoonGenerator
 version: ${project.version}
 main: me.shoko.moongenerator.mainMoonGenerator
-api-version: 1.14.1
+api-version: 1.14
 authors: [Shoko]
 description: The best moon generator plugin for mc 1.14.1
 website: https://www.spigotmc.org/members/shoko.633572/

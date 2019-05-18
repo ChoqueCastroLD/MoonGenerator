@@ -151,12 +151,12 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
     // Use rocket logic
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && !event.getPlayer().isSneaking()) {
             if(config.getBoolean("useRockets")) {
                 Player player = event.getPlayer();
                 PlayerInventory playerInv = player.getInventory();
-                if(playerInv.getItemInMainHand().equals(new ItemStack(Material.FIREWORK_ROCKET)) || playerInv.getItemInOffHand().equals(new ItemStack(Material.FIREWORK_ROCKET))){
-                    if(player.hasPermission("moongenerator.userocket")) {
+                if(playerInv.getItemInMainHand().getType().equals(new ItemStack(Material.FIREWORK_ROCKET).getType()) || playerInv.getItemInOffHand().getType().equals(new ItemStack(Material.FIREWORK_ROCKET).getType())){
+                    if(player.hasPermission("moongenerator.userocket") || player.isOp()) {
                         event.getPlayer().sendActionBar(ChatColor.RED + "3 2 1...!");
 
                         event.setCancelled(true);
@@ -181,7 +181,7 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
                                     cancel();
                                 } else {
                                     if (player.getVehicle().equals(rocket)) {
-                                        if (player.getLocation().getY() >= 150) {
+                                        if (player.getLocation().getY() >= 115) {
                                             if (config.getString("moonWorldName").compareToIgnoreCase(player.getWorld().getName()) != 0) {
                                                 player.sendActionBar(ChatColor.GREEN + config.getString("toTheMoon"));
                                                 int x = (int) player.getLocation().getX();
@@ -272,11 +272,27 @@ public final class mainMoonGenerator extends JavaPlugin implements Listener {
 
         log("Trying to load Moon World");
 
-        if( getServer().getWorld(config.getString("moonWorldName")) != null ){
+        boolean moonWorldExists = false;
+
+        for (World world: getServer().getWorlds()) {
+            if(world.getName().toLowerCase().equals(config.getString("moonWorldName"))){
+                moonWorldExists = true;
+            }
+        }
+
+        if(!moonWorldExists){
             log("Moon world named '"+config.getString("moonWorldName")+"' found!");
+            World w = getServer().createWorld(new WorldCreator(config.getString("moonWorldName")));
+            w.getPopulators().add(new OreVeinPopulator());
+            w.getPopulators().add(new FloraPopulator());
+
+            w.setTime(24000);
+            w.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+
+            log("Moon loaded");
         } else {
             log("Moon world named '"+config.getString("moonWorldName")+"' NOT found!");
-            log("Generating...");
+            log("It will be generate on load");
             new BukkitRunnable() {
                 @Override
                 public void run() {
