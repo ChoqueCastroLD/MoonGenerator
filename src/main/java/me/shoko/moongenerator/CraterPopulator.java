@@ -54,13 +54,7 @@ public class CraterPopulator extends BlockPopulator {
 
                             if (center.distance(position) <= radius + 0.5) {
                                 if(!world.getBlockAt((int) position.toLocation(world).getX(), (int) position.toLocation(world).getY() - 1, (int) position.toLocation(world).getZ()).getType().equals(Material.BEDROCK)) {
-                                    new BukkitRunnable() {
-                                        @Override
-                                        public void run() {
-                                            world.getBlockAt(position.toLocation(world)).setType(Material.AIR, false);
-                                        }
-                                    }.runTaskLater(plugin,1);
-
+                                    world.getBlockAt(position.toLocation(world)).setType(Material.AIR, false);
                                 }
                             }
                         }

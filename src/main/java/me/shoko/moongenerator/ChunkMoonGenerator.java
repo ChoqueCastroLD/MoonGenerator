@@ -13,8 +13,6 @@ import java.util.*;
 
 public class ChunkMoonGenerator extends ChunkGenerator {
 
-    JavaPlugin plugin;
-
     public float lerp(float min, float max, float norm){
         return (max - min) * norm + min;
     }
