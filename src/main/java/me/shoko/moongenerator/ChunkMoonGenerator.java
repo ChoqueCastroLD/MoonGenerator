@@ -1,15 +1,15 @@
 package me.shoko.moongenerator;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class ChunkMoonGenerator extends ChunkGenerator {
 
@@ -34,7 +34,7 @@ public class ChunkMoonGenerator extends ChunkGenerator {
 
                 currentHeight = (int) ( lerp(0f, 1f, terrainNoise) * 15D + 60D);
 
-                if(currentHeight > 200) currentHeight = 200;
+                if (currentHeight > 100) currentHeight = 100;
                 if(currentHeight < 16) currentHeight = 16;
 
 
@@ -78,11 +78,9 @@ public class ChunkMoonGenerator extends ChunkGenerator {
         return true;
     }
 
-/*
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
         return Arrays.asList(new CraterPopulator(), new OreVeinPopulator(), new FloraPopulator());
     }
-*/
 
 }

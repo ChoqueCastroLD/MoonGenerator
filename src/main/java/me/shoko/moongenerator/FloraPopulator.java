@@ -6,22 +6,25 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Random;
 
 public class FloraPopulator extends BlockPopulator {
 
-    static void setBlockAt(final Chunk chunk, final int x, final int y, final int z, final Material material) {
+    JavaPlugin plugin;
+
+    public void setBlockAt(final Chunk chunk, final int x, final int y, final int z, final Material material) {
         final Waterlogged data = (Waterlogged) material.createBlockData();
         data.setWaterlogged(false);
         final Block block = chunk.getBlock(x, y, z);
         block.setBlockData(data, false);
     }
 
-    int amount;
-
     @Override
     public void populate(World world, Random random, Chunk chunk) {
+        int amount;
+
         if (random.nextBoolean()) {
             amount = random.nextInt(4) + 1;
             for (int i = 1; i < amount; i++) {
